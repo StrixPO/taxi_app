@@ -1,18 +1,15 @@
 import sys
 from tkinter import messagebox
-
+import re
 import mysql.connector
-import self as self
 
 from Database import connection
-from Models import clientM
+from Models.clientM import Client
 
 
-class Bclient():
+class BClient:
     def __init__(self, customer):
         self.customer = customer
-
-    import mysql.connector
 
     def authenticate_customer(self):
         conn = None
@@ -26,7 +23,7 @@ class Bclient():
             content = cursor.fetchall()
             if len(content) == 0 or content is None:
                 result['status'] = False
-                result['content'] = 'No matching email and password found.'
+                messagebox.showerror("no matching value")
             else:
                 result['status'] = True
                 result['content'] = content
@@ -43,17 +40,44 @@ class Bclient():
             del sql
             return result
 
+    import re
+
+    def check_email(self):
+        # Connect to the database
+        conn = connection.conect_db()
+        cursor = conn.cursor()
+
+        # Validate the email address using a regular expression
+        regex = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
+        if not re.match(regex, self.customer.getemail()):
+            messagebox.showerror("Error", "This email format is wrong")
+            return re.match(regex, self.customer.getemail()) is not None
+
+        # Execute a query to check if the email exists
+        cursor.execute("SELECT * FROM customer WHERE email=%s", (self.customer.getemail(),))
+        result = cursor.fetchone()
+
+        # Close the connection to the database
+        conn.close()
+
+        # Return True if the email exists, False otherwise
+        return result is not None
+
     def regcust(self):
+        if not self.check_email():
+            messagebox.askretrycancel("Error", "Please try again")
+            return False
+
         conn = None
         sql = """INSERT INTO customer(name,number,email, password, address) 
         VALUES (%s,%s,%s,%s,%s) """
 
         values = (
             self.customer.getname(),
-            self.customer.getaddress(),
-            self.customer.getemail(),
             self.customer.getnumber(),
-            self.customer.getpassword()
+            self.customer.getemail(),
+            self.customer.getpassword(),
+            self.customer.getaddress()
         )
         result = False
         try:

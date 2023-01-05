@@ -5,7 +5,7 @@ from PIL import Image, ImageTk
 
 
 # Create class
-class Drregister(tk.Tk):
+class DriverRegister(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
         # object for tkinter
@@ -41,7 +41,7 @@ class Drregister(tk.Tk):
         self.logo_canvas.place(x=100, y=48)
 
         self.logo = Image.open("Frontend/Images/grey_logo.png")
-        self.logo = self.logo.resize((550, 690), Image.ANTIALIAS)
+        self.logo = self.logo.resize((140, 140), Image.ANTIALIAS)
         self.re_logo = ImageTk.PhotoImage(self.logo)
 
         self.logo_canvas.create_image(278, 345, image=self.re_logo)

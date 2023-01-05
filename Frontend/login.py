@@ -1,13 +1,10 @@
-# import ykinter modules and files
+# import tkinter modules and files
 import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
-
-import Models
-from Business.Bclient import Bclient
+from Business.Bclient import BClient
 from Frontend import selection
 from Frontend.clientHome import ClientHome
-from Models import clientM
 from Models.clientM import Client
 
 
@@ -18,7 +15,6 @@ class LoginPage:
         self.root = tk.Tk()
         self.root.minsize(width=400, height=600)
         # root.resizable(False,False)
-
 
         # blank label
         self.blankLb = tk.Label(text="<<", font=("cursive", 10, "bold"), bg="#4A6D7C",
@@ -57,10 +53,8 @@ class LoginPage:
         self.pass_in = tk.Entry(self.mPanel, width=43, show="*")
         self.pass_in.place(x=20, y=330)
 
-
-
         # login button
-        self.lg_btn = tk.Button(text="Login", width=7, height=1, command=self.authenticateLogin)
+        self.lg_btn = tk.Button(text="Login", width=7, height=1, command=self.authenticate_login)
         self.lg_btn.place(x=270, y=460)
 
         # sign up route
@@ -82,25 +76,23 @@ class LoginPage:
         self.root.destroy()  # close the LoginPage window
         selection_page = selection.SelectionPage()  # open the SelectionPage window
 
-
-    def authenticateLogin(self):
+    def authenticate_login(self):
 
         email = self.email_in.get()
         password = self.pass_in.get()
         cus = Client()
         cus.setemail(email)
         cus.setpassword(password)
-        b_client = Bclient(cus)
+        b_client = BClient(cus)
         login = b_client.authenticate_customer()
 
         if login['status']:
-            from Frontend.clientHome import ClientHome
+            from Frontend.logged import clhome
             messagebox.showinfo('Done!', 'Login Successful')
             self.root.destroy()
             log = login['content']
-            cus = Client()
-            cus.setclient_id(log[0][0])
-            cus.setname(log[0][1])
-            ClientHome(clientM)
+            customer = Client()
+            customer.setclient_id(log[0][0])
+            ClientHome(customer)
         else:
             messagebox.showerror('error', 'email or password did not match')

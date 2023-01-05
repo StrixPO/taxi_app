@@ -1,8 +1,8 @@
 # Importing modulesor files
 import tkinter as tk
 from PIL import Image, ImageTk
-from Frontend.driverRegister import Drregister
-from Frontend.clientRegister import Clregister
+from Frontend.driverRegister import DriverRegister
+from Frontend.clientRegister import ClientRegister
 
 
 # import driverRegister
@@ -17,15 +17,15 @@ class SelectionPage(tk.Tk):
         self.minsize(width=400, height=600)
 
         def clientRegister():
-            client_register = Clregister()
+            client_register = ClientRegister()
 
         def driverRegister():
-            driver_register = Drregister()
+            driver_register = DriverRegister()
 
         # blank label
-        self.blnk_lb = tk.Label(text="<<", font=("cursive", 10, "bold"), bg="#4A6D7C",
-                                foreground="#4A6D7C", relief="groove", border=0)
-        self.blnk_lb.pack()
+        self.back_btn = tk.Label(text="<<", font=("cursive", 10, "bold"), bg="#4A6D7C",
+                                 foreground="#4A6D7C", relief="groove", border=0)
+        self.back_btn.pack()
 
         # create panned window
         self.m_panel = tk.PanedWindow(self, width=300, height=500, bg="#393A10")
@@ -68,7 +68,7 @@ class SelectionPage(tk.Tk):
         # for clinet button
 
         self.client_btn = tk.Button(self.m_panel, text="", width=10, height=5, background="#393A10",
-                                    )
+                                    command=lambda: [self.destroy(), clientRegister()])
         self.client_btn.place(x=190, y=350)
 
         # for logo

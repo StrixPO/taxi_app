@@ -3,13 +3,14 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from Models import clientM
-from Business.Bclient import Bclient
+from Business.Bclient import BClient
+
 
 
 # Create class
-class Clregister(tk.Tk):
+class ClientRegister(tk.Tk):
     def __init__(self):
-
+        tk.Tk.__init__(self)
         # oject for tkinter
         self.minsize(width=1000, height=650)
         self.resizable(False, False)
@@ -55,19 +56,22 @@ class Clregister(tk.Tk):
                 pass
 
                 # left panned window
+        def back_btn():
+            self.destroy()
+            back_login = LoginPage()
 
         self.l_panel = tk.PanedWindow(width=450, height=650)
         self.l_panel.pack(side="left")
 
         # left panel image
-        self.reg_cnv = tk.Canvas(self.l_panel, bg="#393A10", width=550, height=690, border=0, )
-        self.reg_cnv.pack()
+        self.logo_cnv = tk.Canvas(self.l_panel, bg="#393A10", width=550, height=690, border=0, )
+        self.logo_cnv.pack()
 
-        self.reg_img = Image.open("Images/taxi_page.jpg")
-        self.reg_img = self.reg_img.resize((550, 690), Image.ANTIALIAS)
-        self.resize_regimg = ImageTk.PhotoImage(self.reg_img)
+        self.logo_img = Image.open("Frontend/Images/taxi_page.jpg")
+        self.logo_img = self.logo_img.resize((550, 690), Image.ANTIALIAS)
+        self.resize_logoimg = ImageTk.PhotoImage(self.logo_img)
 
-        self.reg_cnv.create_image(278, 345, image=self.resize_regimg)
+        self.logo_cnv.create_image(278, 345, image=self.resize_logoimg)
 
         # right panned window
         self.r_panel = tk.PanedWindow(background="#4A6D7C", width=450, height=650)
@@ -75,15 +79,18 @@ class Clregister(tk.Tk):
 
         # right panel contents
 
+
         # create panned window
         self.m_panel = tk.PanedWindow(self.r_panel, width=400, height=615, bg="#393A10")
         self.m_panel.pack(pady=35, padx=25)
+
+
 
         # add logo
         self.logo_canvas = tk.Canvas(self.m_panel, bg="#393A10", width=120, height=120, border=0, )
         self.logo_canvas.pack(pady=60)
 
-        self.logo = Image.open("Images/grey_logo.png")
+        self.logo = Image.open("Frontend/Images/grey_logo.png")
         self.logo = self.logo.resize((140, 140), Image.ANTIALIAS)
         self.re_logo = ImageTk.PhotoImage(self.logo)
 
@@ -136,13 +143,13 @@ class Clregister(tk.Tk):
         self.pass_in.bind("<Button-1>", pass_click)
         # register button
         self.reg_btn = tk.Button(self.m_panel, text="Register", width=7, height=1, relief="groove",
-                              command=self.Register)
+                                 command=self.register)
         self.reg_btn.pack(pady=15)
 
         # execute window
-        self.root.mainloop()
+        self.mainloop()
 
-    def Register(self):
+    def register(self):
         from Models.clientM import Client
         name = self.name_in.get()
         address = self.address_in.get()
@@ -151,20 +158,17 @@ class Clregister(tk.Tk):
         password = self.pass_in.get()
 
         cus = Client(name, address, email, number, password)
-        b_client = Bclient(cus)
+        b_client = BClient(cus)
         try:
             b_cus = b_client.regcust()
             if b_cus:
+                self.destroy()
                 self.openhome()
-                self.root.destroy()
+
 
         except Exception as e:
             messagebox.showerror("Error", "An error occurred while trying to register: {}".format(e))
 
     def openhome(self):
-        from Frontend.clientHome import ClientHome
-        home = ClientHome()
-
-
-
-
+        from Frontend.login import LoginPage
+        home = LoginPage()
