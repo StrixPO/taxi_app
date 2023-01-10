@@ -1,19 +1,20 @@
-# import ykinter modules and files
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from PIL import Image, ImageTk
-from Models import clientM
-from Business.Bclient import BClient
+
+from BusinessLayer.Bclient import BClient
+from Models.ClientM import ClientModel
 
 
-
-# Create class
 class ClientRegister(tk.Tk):
+
     def __init__(self):
         tk.Tk.__init__(self)
         # oject for tkinter
-        self.minsize(width=1000, height=650)
+        self.minsize(width=900, height=600)
         self.resizable(False, False)
+
+        # button click functions
 
         def name_click(event):
 
@@ -56,41 +57,38 @@ class ClientRegister(tk.Tk):
                 pass
 
                 # left panned window
-        def back_btn():
-            self.destroy()
-            back_login = LoginPage()
 
-        self.l_panel = tk.PanedWindow(width=450, height=650)
+        self.l_panel = tk.PanedWindow(width=450, height=550)
         self.l_panel.pack(side="left")
 
         # left panel image
-        self.logo_cnv = tk.Canvas(self.l_panel, bg="#393A10", width=550, height=690, border=0, )
-        self.logo_cnv.pack()
+        self.splash_cnv = tk.Canvas(self.l_panel, bg="#393A10", width=450, height=550, border=0, )
+        self.splash_cnv.pack(fill="both")
 
-        self.logo_img = Image.open("Frontend/Images/taxi_page.jpg")
-        self.logo_img = self.logo_img.resize((550, 690), Image.ANTIALIAS)
-        self.resize_logoimg = ImageTk.PhotoImage(self.logo_img)
+        self.splash_img = Image.open("FrontendLayer/Images/taxi_page.jpg")
+        self.splash_img = self.splash_img.resize((750, 1150), Image.ANTIALIAS)
+        self.resize_splashimg = ImageTk.PhotoImage(self.splash_img)
 
-        self.logo_cnv.create_image(278, 345, image=self.resize_logoimg)
+        self.splash_cnv.create_image(225, 120, image=self.resize_splashimg)
 
         # right panned window
-        self.r_panel = tk.PanedWindow(background="#4A6D7C", width=450, height=650)
+        self.r_panel = tk.PanedWindow(background="#4A6D7C", width=450, height=550)
         self.r_panel.pack(side="right")
 
-        # right panel contents
+        self.back_btn = tk.Button(self.r_panel, background="#4A6D7C", text="<<~~~~",
+                                  foreground="white", relief="groove", border=0,
+                                  command=lambda: [self.destroy(), self.back()])
+        self.back_btn.pack()
 
-
-        # create panned window
-        self.m_panel = tk.PanedWindow(self.r_panel, width=400, height=615, bg="#393A10")
-        self.m_panel.pack(pady=35, padx=25)
-
-
+        # create panned window/.
+        self.m_panel = tk.PanedWindow(self.r_panel, width=400, height=480, bg="#393A10")
+        self.m_panel.pack(pady=25, padx=25)
 
         # add logo
         self.logo_canvas = tk.Canvas(self.m_panel, bg="#393A10", width=120, height=120, border=0, )
         self.logo_canvas.pack(pady=60)
 
-        self.logo = Image.open("Frontend/Images/grey_logo.png")
+        self.logo = Image.open("FrontendLayer/Images/grey_logo.png")
         self.logo = self.logo.resize((140, 140), Image.ANTIALIAS)
         self.re_logo = ImageTk.PhotoImage(self.logo)
 
@@ -101,7 +99,7 @@ class ClientRegister(tk.Tk):
         self.name_in = tk.Entry(self.m_panel, width=60, )
         self.name_in.insert(0, "Enter your name: ")
         self.name_in.config(state="disabled")
-        self.name_in.pack(padx=35, pady=25, ipady=5)
+        self.name_in.pack(padx=35, pady=10, ipady=4)
 
         # binding the function to the entry
         self.name_in.bind("<Button-1>", name_click)
@@ -111,7 +109,7 @@ class ClientRegister(tk.Tk):
         self.num_in = tk.Entry(self.m_panel, width=60)
         self.num_in.insert(0, "Enter your phone number: ")
         self.num_in.config(state="disabled")
-        self.num_in.pack(padx=35, pady=25, ipady=5)
+        self.num_in.pack(padx=35, pady=10, ipady=4)
 
         self.num_in.bind("<Button-1>", num_click)
 
@@ -120,7 +118,7 @@ class ClientRegister(tk.Tk):
         self.address_in = tk.Entry(self.m_panel, width=60)
         self.address_in.insert(0, "Enter your address: ")
         self.address_in.config(state="disabled")
-        self.address_in.pack(padx=35, pady=25, ipady=5)
+        self.address_in.pack(padx=35, pady=10, ipady=4)
 
         self.address_in.bind("<Button-1>", address_click)
 
@@ -129,7 +127,7 @@ class ClientRegister(tk.Tk):
         self.email_in = tk.Entry(self.m_panel, width=60)
         self.email_in.insert(0, "Enter your email address: ")
         self.email_in.config(state="disabled")
-        self.email_in.pack(padx=35, pady=25, ipady=5)
+        self.email_in.pack(padx=35, pady=10, ipady=5)
 
         self.email_in.bind("<Button-1>", email_click)
 
@@ -138,7 +136,7 @@ class ClientRegister(tk.Tk):
         self.pass_in = tk.Entry(self.m_panel, width=60, show="*")
         self.pass_in.insert(0, "Enter your password: ")
         self.pass_in.config(state="disabled")
-        self.pass_in.pack(padx=35, pady=25, ipady=5)
+        self.pass_in.pack(padx=35, pady=10, ipady=5)
 
         self.pass_in.bind("<Button-1>", pass_click)
         # register button
@@ -150,25 +148,31 @@ class ClientRegister(tk.Tk):
         self.mainloop()
 
     def register(self):
-        from Models.clientM import Client
+        from Models.ClientM import ClientModel
         name = self.name_in.get()
         address = self.address_in.get()
         email = self.email_in.get()
         number = self.num_in.get()
         password = self.pass_in.get()
 
-        cus = Client(name, address, email, number, password)
+        cus = ClientModel(name, address, email, number, password)
         b_client = BClient(cus)
         try:
-            b_cus = b_client.regcust()
+            b_cus = b_client.register_client()
             if b_cus:
                 self.destroy()
-                self.openhome()
+                self.openlogin()
 
 
         except Exception as e:
             messagebox.showerror("Error", "An error occurred while trying to register: {}".format(e))
 
-    def openhome(self):
-        from Frontend.login import LoginPage
-        home = LoginPage()
+    def openlogin(self):
+        from FrontendLayer.Login import LoginPage
+
+        log = LoginPage()
+
+    def back(self):
+        from FrontendLayer.selectionpage import SelectionPage
+
+        back = SelectionPage()

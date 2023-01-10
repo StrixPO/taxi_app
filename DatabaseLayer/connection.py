@@ -2,7 +2,7 @@ import mysql.connector
 import sys
 
 
-def conect_db():
+def connect_db():
     conn = None
     # create connection
     try:
@@ -13,7 +13,7 @@ def conect_db():
                                        database="taxi_app"
                                        )
     except:
-        print("Error :", sys.exc_info())
+        print("ERROR : ", sys.exc_info())
 
     finally:
         return conn

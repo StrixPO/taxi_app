@@ -1,5 +1,5 @@
-class Client(object):
-    client_id = name = address = email = number = password = None
+class ClientModel(object):
+    cid = name = number = email = password = None
 
     def __init__(self, name=None, address=None, email=None, number=None, password=None):
         self.client_id = 0

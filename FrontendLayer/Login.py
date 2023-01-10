@@ -1,15 +1,20 @@
-# import tkinter modules and files
+# import system modules
 import tkinter as tk
-from tkinter import ttk, messagebox
+from tkinter import messagebox
 from PIL import Image, ImageTk
-from Business.Bclient import BClient
-from Frontend import selection
-from Frontend.clientHome import ClientHome
-from Models.clientM import Client
+
+from FrontendLayer.clienthome import ClientHome
+# import file modules
+from Models.ClientM import ClientModel
+from BusinessLayer.Bclient import BClient
+from BusinessLayer.Bdriver import BDriver
+from Models.DriverM import DriverModel
+from FrontendLayer.selectionpage import SelectionPage
 
 
-# class creation
+# login page class
 class LoginPage:
+    # initiallization funcation
     def __init__(self):
         # object for tkinter
         self.root = tk.Tk()
@@ -29,7 +34,7 @@ class LoginPage:
         self.logoCanvas = tk.Canvas(self.mPanel, bg="#393A10", width=120, height=120, border=0, )
         self.logoCanvas.place(x=100, y=48)
 
-        self.logo = Image.open("Frontend\Images\grey_logo.png")
+        self.logo = Image.open("FrontendLayer/Images/grey_logo.png")
         self.logo = self.logo.resize((130, 130), Image.ANTIALIAS)
         self.re_logo = ImageTk.PhotoImage(self.logo)
 
@@ -43,8 +48,6 @@ class LoginPage:
         self.email_in = tk.Entry(self.mPanel, width=43, )
         self.email_in.place(x=20, y=250)
 
-        # forgotton password
-
         # ask for password
         self.pass_lb = tk.Label(self.mPanel, text="Password: ", font=("cursive", 9, "bold"), background="#393A10",
                                 foreground="white")
@@ -54,8 +57,11 @@ class LoginPage:
         self.pass_in.place(x=20, y=330)
 
         # login button
-        self.lg_btn = tk.Button(text="Login", width=7, height=1, command=self.authenticate_login)
-        self.lg_btn.place(x=270, y=460)
+        self.client_lg_btn = tk.Button(text="Client", width=7, height=1, command=self.client_authenticate_login)
+        self.client_lg_btn.place(x=270, y=460)
+
+        self.driver_lg_btn = tk.Button(text="Driver", width=7, height=1, command=self.driver_authenticate_login)
+        self.driver_lg_btn.place(x=75, y=460)
 
         # sign up route
         self.lb_register = tk.Label(text="Not Registered yet?", background="#393A10", foreground="white")
@@ -72,27 +78,53 @@ class LoginPage:
         # execute tkinter
         self.root.mainloop()
 
+    # route function for selection page
     def open_selection_page(self):
         self.root.destroy()  # close the LoginPage window
-        selection_page = selection.SelectionPage()  # open the SelectionPage window
+        selection_page = SelectionPage()  # object for SelectionPage window
 
-    def authenticate_login(self):
-
+    # function for verifying client
+    def client_authenticate_login(self):
         email = self.email_in.get()
-        password = self.pass_in.get()
-        cus = Client()
+        passwd = self.pass_in.get()
+        cus = ClientModel()
         cus.setemail(email)
-        cus.setpassword(password)
+        cus.setpassword(passwd)
+
         b_client = BClient(cus)
-        login = b_client.authenticate_customer()
+        login = b_client.authenticate_client()
 
         if login['status']:
-            from Frontend.logged import clhome
-            messagebox.showinfo('Done!', 'Login Successful')
+
+            messagebox.showinfo("Done!", "Login Successful!")
             self.root.destroy()
             log = login['content']
-            customer = Client()
+            customer = ClientModel()
             customer.setclient_id(log[0][0])
             ClientHome(customer)
         else:
-            messagebox.showerror('error', 'email or password did not match')
+            messagebox.showerror('error', "email or password did not match!")
+
+    # function for verifying driver
+    def driver_authenticate_login(self):
+
+        email = self.email_in.get()
+        passwd = self.pass_in.get()
+        cus = DriverModel()
+        cus.setemail(email)
+        cus.setpassword(passwd)
+
+        b_driver = BDriver(cus)
+        login = b_driver.authenticate_driver()
+
+        if login['status']:
+
+            messagebox.showinfo("Done!", "Login Successful!")
+
+            self.root.destroy()
+            log = login['content']
+            customer = DriverModel()
+            customer.setclient_id(log[0][0])
+            # ClientHome(customer)
+        else:
+            messagebox.showerror('error', "email or password did not match!")

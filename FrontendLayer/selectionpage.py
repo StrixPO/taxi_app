@@ -1,15 +1,10 @@
-# Importing modulesor files
 import tkinter as tk
 from PIL import Image, ImageTk
-from Frontend.driverRegister import DriverRegister
-from Frontend.clientRegister import ClientRegister
+
+from FrontendLayer.clientregister import ClientRegister
+from FrontendLayer.driverregister import DriverRegister
 
 
-# import driverRegister
-# import clientRegister
-
-
-# class creation
 class SelectionPage(tk.Tk):
     def __init__(self):
         tk.Tk.__init__(self)
@@ -35,7 +30,7 @@ class SelectionPage(tk.Tk):
         self.logo_canvas = tk.Canvas(self.m_panel, bg="#393A10", width=120, height=120, border=0, )
         self.logo_canvas.place(x=100, y=48)
 
-        self.logo = Image.open("Frontend/Images/grey_logo.png")
+        self.logo = Image.open("FrontendLayer/Images/grey_logo.png")
         self.logo = self.logo.resize((130, 130), Image.ANTIALIAS)
         self.re_logo = ImageTk.PhotoImage(self.logo)
 
@@ -57,7 +52,7 @@ class SelectionPage(tk.Tk):
         self.driver_logo = tk.Canvas(self.m_panel, bg="#393A10", width=75, height=40, border=0, )
         self.driver_logo.place(x=30, y=350)
 
-        self.d_logo = Image.open("Frontend/Images/driver_logo.png")
+        self.d_logo = Image.open("FrontendLayer/Images/driver_logo.png")
         self.d_logo = self.d_logo.resize((80, 100), Image.ANTIALIAS)
         self.d_re_logo = ImageTk.PhotoImage(self.d_logo)
 
@@ -75,7 +70,7 @@ class SelectionPage(tk.Tk):
         self.client_logo = tk.Canvas(self.m_panel, bg="#393A10", width=75, height=40, border=0, )
         self.client_logo.place(x=190, y=350)
 
-        self.c_logo = Image.open("Frontend/Images/client_logo.png")
+        self.c_logo = Image.open("FrontendLayer/Images/client_logo.png")
         self.c_logo = self.c_logo.resize((80, 80), Image.ANTIALIAS)
         self.c_re_logo = ImageTk.PhotoImage(self.c_logo)
 
