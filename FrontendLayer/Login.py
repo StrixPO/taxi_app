@@ -4,6 +4,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 from FrontendLayer.clienthome import ClientHome
+from FrontendLayer.driverhome import DriverHome
 # import file modules
 from Models.ClientM import ClientModel
 from BusinessLayer.Bclient import BClient
@@ -78,6 +79,12 @@ class LoginPage:
         # execute tkinter
         self.root.mainloop()
 
+    #route for admin page
+    def admin_log(self):
+        from FrontendLayer.adminhome import AdminHome
+        ap = AdminHome()
+
+
     # route function for selection page
     def open_selection_page(self):
         self.root.destroy()  # close the LoginPage window
@@ -87,23 +94,28 @@ class LoginPage:
     def client_authenticate_login(self):
         email = self.email_in.get()
         passwd = self.pass_in.get()
-        cus = ClientModel()
-        cus.setemail(email)
-        cus.setpassword(passwd)
-
-        b_client = BClient(cus)
-        login = b_client.authenticate_client()
-
-        if login['status']:
-
-            messagebox.showinfo("Done!", "Login Successful!")
+        if email == "admin@123" and passwd == "admin":
+            messagebox.showinfo("Done!", "Login Successful. Welcome Admin")
             self.root.destroy()
-            log = login['content']
-            customer = ClientModel()
-            customer.setclient_id(log[0][0])
-            ClientHome(customer)
+            self.admin_log()
         else:
-            messagebox.showerror('error', "email or password did not match!")
+            cus = ClientModel()
+            cus.setemail(email)
+            cus.setpassword(passwd)
+
+            b_client = BClient(cus)
+            login = b_client.authenticate_client()
+
+            if login['status']:
+
+                messagebox.showinfo("Done!", "Login Successful!")
+                self.root.destroy()
+                log = login['content']
+                customer = ClientModel()
+                customer.setclient_id(log[0][0])
+                ClientHome(customer)
+            else:
+                messagebox.showerror('error', "email or password did not match!")
 
     # function for verifying driver
     def driver_authenticate_login(self):
@@ -123,8 +135,8 @@ class LoginPage:
 
             self.root.destroy()
             log = login['content']
-            customer = DriverModel()
-            customer.setclient_id(log[0][0])
-            # ClientHome(customer)
+            driver = DriverModel()
+            driver.setdriver_id(log[0][0])
+            DriverHome(driver)
         else:
             messagebox.showerror('error', "email or password did not match!")

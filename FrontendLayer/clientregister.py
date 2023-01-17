@@ -3,7 +3,7 @@ from tkinter import messagebox
 from PIL import Image, ImageTk
 
 from BusinessLayer.Bclient import BClient
-from Models.ClientM import ClientModel
+
 
 
 class ClientRegister(tk.Tk):

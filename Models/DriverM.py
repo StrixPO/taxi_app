@@ -1,8 +1,8 @@
 class DriverModel(object):
-    cid = name = number = email = password = license = carmodel = None
+    driver_id = name = number = email = password = license = carmodel = None
 
     def __init__(self, name=None, address=None, email=None, number=None, password=None, license = None, carmodel =None):
-        self.client_id = 0
+        self.driver_id = 0
         self.name = name
         self.address = address
         self.email = email
@@ -56,9 +56,9 @@ class DriverModel(object):
         self.carmodel = carmodel
 
 
-    def getclient_id(self):
-        return self.client_id
+    def getdriver_id(self):
+        return self.driver_id
 
-    def setclient_id(self, client_id):
-        self.client_id = client_id
+    def setdriver_id(self, driver_id):
+        self.driver_id = driver_id
 

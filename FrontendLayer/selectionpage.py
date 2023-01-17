@@ -1,6 +1,8 @@
+# import python modules
 import tkinter as tk
 from PIL import Image, ImageTk
 
+# import directory packages
 from FrontendLayer.clientregister import ClientRegister
 from FrontendLayer.driverregister import DriverRegister
 

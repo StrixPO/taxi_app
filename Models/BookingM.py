@@ -1,7 +1,8 @@
 class Booking(object):
-    book_id = client_id = pickup_time = pickup_date = pickup_location = drop_location = None
+    book_id = client_id = driver_id = pickup_time = pickup_date = pickup_location = drop_location = None
 
     def __init__(self, pickup_time=None, pickup_date=None, pickup_location=None, drop_location=None):
+        self.driver_id = 0
         self.book_id = 0
         self.client_id = 0
         self.pickup_time = pickup_time
@@ -44,3 +45,9 @@ class Booking(object):
 
     def setclient_id(self, client_id):
         self.client_id = client_id
+
+    def getdriver_id(self):
+        return self.driver_id
+
+    def setdriver_id(self, driver_id):
+        self.driver_id = driver_id

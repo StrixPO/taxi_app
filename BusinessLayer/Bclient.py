@@ -14,7 +14,7 @@ class BClient:
     def __init__(self, client):
         self.client = client
 
-    # function for storing client data
+    # check the validity of email while registering
     def is_valid_email(self):
         regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
         if re.match(regex, self.client.getemail()):
@@ -25,7 +25,7 @@ class BClient:
     def register_client(self):
         # Check if email is in a valid format
         if not self.is_valid_email():
-            messagebox.showerror('Error!', 'Invalid email format.')
+            messagebox.showerror('Error!', 'Format is wrong!!')
             return False
 
         conn = None
@@ -85,7 +85,7 @@ class BClient:
             content = cursor.fetchall()
             if len(content) == 0 or content is None:
                 result['status'] = False
-                messagebox.showerror("no matching value")
+                messagebox.showerror("ERROR!", "Email and password cannot be empty!!")
             else:
                 result['status'] = True
                 result['content'] = content
@@ -102,4 +102,27 @@ class BClient:
             del sql
             return result
 
+    def view_all_client(self):
 
+        conn = None
+        sql = """SELECT * FROM customer"""
+        # values = (self.booking.getclient_id(),)
+        val = None
+        try:
+            conn = connection.connect_db()
+            cursor = conn.cursor()
+            cursor.execute(sql)
+            content = cursor.fetchall()
+            conn.close()
+            # Add the data to the table
+
+            val = content
+
+        except:
+            print("Error : ", sys.exc_info())
+            messagebox.showerror("Error")
+        finally:
+            # del values
+            del sql
+            del conn
+            return val

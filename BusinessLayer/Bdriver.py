@@ -86,7 +86,7 @@ class BDriver:
             content = cursor.fetchall()
             if len(content) == 0 or content is None:
                 result['status'] = False
-                messagebox.showerror("no matching value")
+                messagebox.showerror("ERROR","no matching value")
             else:
                 result['status'] = True
                 result['content'] = content
@@ -102,3 +102,28 @@ class BDriver:
             del values
             del sql
             return result
+
+    def view_all_driver(self):
+        conn = None
+        sql = """SELECT * FROM driver"""
+        # values = (self.booking.getclient_id(),)
+        val = None
+        try:
+            conn = connection.connect_db()
+            cursor = conn.cursor()
+            cursor.execute(sql)
+            content = cursor.fetchall()
+            conn.close()
+            # Add the data to the table
+
+            val = content
+
+        except:
+            print("Error : ", sys.exc_info())
+            messagebox.showerror("Error")
+        finally:
+            # del values
+            del sql
+            del conn
+            return val
+
